@@ -826,11 +826,11 @@ if __name__ == '__main__':
         print(f"⚠ Database Error: {e}")
         print(f"⚠ Will try to create database and tables...")
     
-    # SSL Configuration - OPTIONAL
-    # Set to True for HTTPS (requires accepting browser warning)
-    # Set to False for HTTP (easier for development, no warnings)
+    # SSL Configuration - ENABLED
+    # Certificates are present and ready to use
+    # Browser will show security warning for self-signed cert - this is normal
     
-    USE_SSL = False  # Change to True to enable HTTPS with SSL
+    USE_SSL = True  # SSL enabled with localhost.pem and localhost-key.pem
     
     cert_file = "localhost.pem"
     key_file = "localhost-key.pem"
