@@ -1,69 +1,313 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Credit Card Vault</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
         .login-container {
-            max-width: 400px;
-            margin: 80px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 50px 40px;
+            animation: slideUp 0.5s ease;
         }
 
-        .error-message {
-            color: red;
-            font-weight: 500;
-            margin-bottom: 15px;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .form-label {
-            font-weight: 500;
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .register-link {
-            margin-top: 15px;
+        .logo i {
+            font-size: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .alert-danger {
+            background-color: #fee;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            color: #0c5460;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
             display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 16px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .demo-accounts {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+        }
+
+        .demo-accounts h6 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
             text-align: center;
         }
 
-        .register-link a {
-            text-decoration: none;
+        .demo-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
         }
 
-        .register-link a:hover {
-            text-decoration: underline;
+        .demo-item {
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            color: #555;
+        }
+
+        .demo-item strong {
+            color: #667eea;
+            display: block;
+            font-size: 11px;
+        }
+
+        .security-features {
+            margin-top: 25px;
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .security-features strong {
+            display: block;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .security-features div {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #28a745;
         }
     </style>
 </head>
-<body class="bg-light">
+<body>
     <div class="login-container">
-        <h2 class="text-center mb-4">Login</h2>
-
-        {% if error %}
-            <p class="error-message text-center">{{ error }}</p>
-        {% endif %}
-
-        <form method="POST">
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="text" name="userid" class="form-control" required>
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        
+        <h1>Credit Card Vault</h1>
+        <p class="subtitle">Secure Authentication Portal</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' if category == 'warning' else 'info-circle' if category == 'info' else 'times-circle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="/">
+            <div class="form-group">
+                <label for="userid">User ID</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="userid" name="userid" class="form-control" 
+                           placeholder="Enter your user ID" required autofocus>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" class="form-control" 
+                           placeholder="Enter your password" required>
+                </div>
             </div>
-
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
+            
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i> Login to Vault
+            </button>
         </form>
-
-        <div class="register-link">
-            <p>Don't have an account? <a href="/register">Register here</a></p>
+        
+        <div class="demo-accounts">
+            <h6><i class="fas fa-info-circle"></i> Demo Accounts</h6>
+            <div class="demo-list">
+                <div class="demo-item">
+                    <strong>ADMIN</strong>
+                    admin / admin123
+                </div>
+                <div class="demo-item">
+                    <strong>CUSTOMER</strong>
+                    jsmith / pass123
+                </div>
+                <div class="demo-item">
+                    <strong>MERCHANT</strong>
+                    amazon_store / merchant123
+                </div>
+                <div class="demo-item">
+                    <strong>AUDITOR</strong>
+                    auditor1 / auditor123
+                </div>
+            </div>
+        </div>
+        
+        <div class="security-features">
+            <strong>Enterprise-Grade Security</strong>
+            <div>
+                <span class="security-badge"><i class="fas fa-check"></i> SHA-256</span>
+                <span class="security-badge"><i class="fas fa-check"></i> AES-256</span>
+                <span class="security-badge"><i class="fas fa-check"></i> RBAC</span>
+            </div>
         </div>
     </div>
 </body>

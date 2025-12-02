@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Details - Credit Card Vault</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .alert-danger {
+            background-color: #fee;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .card-display {
+            background: white;
+            padding: 0;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .card-visual {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #f4e5c2 0%, #d4af37 100%);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .card-number {
+            font-size: 28px;
+            letter-spacing: 4px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .card-details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .card-holder {
+            flex: 1;
+        }
+
+        .card-holder label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .card-holder .value {
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .card-expiry {
+            text-align: right;
+        }
+
+        .card-expiry label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .card-expiry .value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-type-logo {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 48px;
+            opacity: 0.9;
+        }
+
+        .info-section {
+            padding: 30px 40px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .info-item {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-item .value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .info-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .cvv-display {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+
+        .actions {
+            padding: 0 40px 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .security-notice {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 20px 40px;
+            color: #0c5460;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-number {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-credit-card"></i> Card Details</h1>
+            <p>Secure view of encrypted card information</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-exclamation-triangle"></i> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card-display">
+            <div class="card-visual">
+                <div class="card-chip"></div>
+                
+                <div class="card-number">
+                    {{ card.card_number }}
+                </div>
+                
+                <div class="card-details-row">
+                    <div class="card-holder">
+                        <label>Card Holder</label>
+                        <div class="value">{{ card.card_holder_name }}</div>
+                    </div>
+                    
+                    <div class="card-expiry">
+                        <label>Expires</label>
+                        <div class="value">{{ card.expiry_month }}/{{ card.expiry_year }}</div>
+                    </div>
+                </div>
+                
+                <div class="card-type-logo">
+                    {% if card.card_type == 'visa' %}
+                    <i class="fab fa-cc-visa"></i>
+                    {% elif card.card_type == 'mastercard' %}
+                    <i class="fab fa-cc-mastercard"></i>
+                    {% elif card.card_type == 'amex' %}
+                    <i class="fab fa-cc-amex"></i>
+                    {% elif card.card_type == 'discover' %}
+                    <i class="fab fa-cc-discover"></i>
+                    {% else %}
+                    <i class="fas fa-credit-card"></i>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="security-notice">
+                <i class="fas fa-shield-alt"></i>
+                <span><strong>Security Notice:</strong> This information is AES-256 encrypted in the database and is only decrypted for authorized admin/merchant viewing.</span>
+            </div>
+
+            <div class="info-section">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label><i class="fas fa-user"></i> Card Owner</label>
+                        <div class="value">{{ card.full_name }}</div>
+                    </div>
+
+                    <div class="info-item cvv-display">
+                        <label><i class="fas fa-lock"></i> CVV Code</label>
+                        <div class="value">{{ card.cvv }}</div>
+                    </div>
+
+                    <div class="info-item full-width">
+                        <label><i class="fas fa-map-marker-alt"></i> Billing Address</label>
+                        <div class="value">{{ card.billing_address }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <label><i class="fas fa-credit-card"></i> Card Type</label>
+                        <div class="value" style="text-transform: uppercase;">{{ card.card_type }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <label><i class="fas fa-calendar-alt"></i> Expiration</label>
+                        <div class="value">{{ card.expiry_month }}/{{ card.expiry_year }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="/vault" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Vault
+                </a>
+                <a href="/dashboard" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

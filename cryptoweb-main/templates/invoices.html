@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic styling for the table, you can move this to style.css */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🧾 Invoices</h1>
+        <nav>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+            {% if role in ['merchant', 'admin'] %}
+                <a href="{{ url_for('create_invoice') }}">Create Invoice</a> |
+            {% endif %}
+            <a href="{{ url_for('vault') }}">Card Vault</a> |
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="flash-{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if invoices %}
+            <h2>All Invoices (Role: {{ role | upper }})</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Customer ID</th>
+                        <th>Merchant ID</th>
+                        <th>Date Created</th>
+                        <th>Card ID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoices %}
+                    <tr>
+                        <td>{{ invoice.id }}</td>
+                        <td>${{ "{:,.2f}".format(invoice.amount) }}</td>
+                        <td>{{ invoice.description }}</td>
+                        <td>{{ invoice.customer_id }}</td>
+                        <td>{{ invoice.merchant_id }}</td>
+                        <td>{{ invoice.created_at | default('N/A') }}</td>
+                        <td>{{ invoice.card_id }}</td>
+                        <td><span style="color: green;">Processed</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No invoices have been created yet.</p>
+            {% if role in ['merchant', 'admin'] %}
+                <p><a href="{{ url_for('create_invoice') }}">Click here to create the first invoice.</a></p>
+            {% endif %}
+        {% endif %}
+
+    </main>
+
+    <footer>
+        <p>&copy; Credit Card Vault Project</p>
+    </footer>
+</body>
+</html>
